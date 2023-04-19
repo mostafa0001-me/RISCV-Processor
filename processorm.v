@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Processor(input clk, input reset, input [1:0] LedSel, input [3:0] ssdSel,
+module Processor(input clk, input rst, input [1:0] LedSel, input [3:0] ssdSel,
     input ssdClk, output reg[15:0] Leds, output [6:0] LED_out, output[3:0] Anode);
     //wires
     reg[12:0] ssd;
