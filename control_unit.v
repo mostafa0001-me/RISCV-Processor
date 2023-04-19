@@ -46,8 +46,8 @@ module ControlUnit
     output reg Jal,
     output reg [3:0] ALUOp);
 
-    always @(instruction) begin
-        case(instruction[6:2])
+    always @(Instruction) begin
+        case(Instruction[6:2])
             `OPCODE_Arith_R: begin
                 Branch = 1'b0; MemRead = 1'b0; MemtoReg = 2'b00; ALUOp = 2'b10; MemWrite = 1'b0; ALUSrc = 1'b0; RegWrite = 1'b1; 
                 ALUSrcB = 1'b0; ConcEn = 1'b0; Jalr =1'b0; Jal = 1'b0; 
