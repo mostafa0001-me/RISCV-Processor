@@ -5,7 +5,7 @@
 // 
 // Create Date: 04/14/2023 10:21:23 PM
 // Design Name: 
-// Module Name: branches
+// Module Name: Branches
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,30 +20,31 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module branches(
-    input branch,
-    input [2:0] inst,
-    output reg andout,
-    input zf,
-    input cf,
-    input sf,
-    input vf
+module Branches(
+    input Branch,
+    input [2:0] Inst,
+    output reg AndOut,
+    input ZF,
+    input CF,
+    input SF,
+    input VF
     );
     
     always @(*) begin
-        if(branch)begin
-            case(inst)
-                3'b000: andout = zf;
-                3'b001: andout = ~zf;
-                3'b100: andout = (sf != vf);
-                3'b101: andout = (sf == vf);
-                3'b110: andout = ~cf;
-                3'b111: andout = cf;
-                default: andout = 1'b0;
+        if(Branch)begin
+            case(Inst)
+                3'b000: AndOut = ZF;
+                3'b001: AndOut = ~ZF;
+                3'b100: AndOut = (SF != VF);
+                3'b101: AndOut = (SF == VF);
+                3'b110: AndOut = ~CF;
+                3'b111: AndOut = CF;
+                default: AndOut = 1'b0;
             endcase
         end
+        // FOR EVERY IF THERE SHOULD BE AN ELSE STATEMENT
         else
-            andout = 1'b0;
+            AndOut = 1'b0;
     end
     
 endmodule
