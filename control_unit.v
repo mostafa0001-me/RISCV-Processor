@@ -42,51 +42,51 @@ module ControlUnit
     output reg RegWrite, 
     output reg ALUSrcB, 
     output reg ConcEn, 
-    output reg JALR,
-    output reg JAL,
+    output reg Jalr,
+    output reg Jal,
     output reg [3:0] ALUOp);
 
     always @(instruction) begin
         case(instruction[6:2])
             `OPCODE_Arith_R: begin
                 Branch = 1'b0; MemRead = 1'b0; MemtoReg = 2'b00; ALUOp = 2'b10; MemWrite = 1'b0; ALUSrc = 1'b0; RegWrite = 1'b1; 
-                ALUSrcB = 1'b0; ConcEn = 1'b0; JALR =1'b0; JAL = 1'b0; 
+                ALUSrcB = 1'b0; ConcEn = 1'b0; Jalr =1'b0; Jal = 1'b0; 
             end
             `OPCODE_Load: begin
                 Branch = 1'b0; MemRead = 1'b1; MemtoReg = 2'b01; ALUOp = 2'b00; MemWrite = 1'b0; ALUSrc = 1'b1; RegWrite = 1'b1; 
-                ALUSrcB = 1'b0; ConcEn = 1'b0; JALR =1'b0; JAL = 1'b0;
+                ALUSrcB = 1'b0; ConcEn = 1'b0; Jalr =1'b0; Jal = 1'b0;
             end
             `OPCODE_Store: begin
                 Branch = 1'b0; MemRead = 1'b0; MemtoReg = 2'b00; ALUOp = 2'b00; MemWrite = 1'b1; ALUSrc = 1'b1; RegWrite = 1'b0; 
-                ALUSrcB = 1'b0; ConcEn = 1'b0; JALR =1'b0; JAL = 1'b0;
+                ALUSrcB = 1'b0; ConcEn = 1'b0; Jalr =1'b0; Jal = 1'b0;
             end                                           
             `OPCODE_Branch: begin                               
                 Branch = 1'b1; MemRead = 1'b0; MemtoReg = 2'b00; ALUOp = 2'b01; MemWrite = 1'b0; ALUSrc = 1'b0; RegWrite = 1'b0; 
-                ALUSrcB = 1'b0; ConcEn = 1'b0; JALR =1'b0; JAL = 1'b0;
+                ALUSrcB = 1'b0; ConcEn = 1'b0; Jalr =1'b0; Jal = 1'b0;
             end                                           
             `OPCODE_AUIPC: begin                               
                 Branch = 1'b0; MemRead = 1'b0; MemtoReg = 2'b00; ALUOp = 2'b00; MemWrite = 1'b0; ALUSrc = 1'b1; RegWrite = 1'b1; 
-                ALUSrcB = 1'b1; ConcEn = 1'b1; JALR =1'b0; JAL = 1'b0;
+                ALUSrcB = 1'b1; ConcEn = 1'b1; Jalr =1'b0; Jal = 1'b0;
             end                                           
             `OPCODE_Arith_I: begin                               
                 Branch = 1'b0; MemRead = 1'b0; MemtoReg = 2'b00; ALUOp = 2'b10; MemWrite = 1'b0; ALUSrc = 1'b1; RegWrite = 1'b1; 
-                ALUSrcB = 1'b0; ConcEn = 1'b0; JALR =1'b0; JAL = 1'b0;
+                ALUSrcB = 1'b0; ConcEn = 1'b0; Jalr =1'b0; Jal = 1'b0;
             end                                           
             `OPCODE_JAL: begin                               
                 Branch = 1'b0; MemRead = 1'b0; MemtoReg = 2'b10; ALUOp = 2'b00; MemWrite = 1'b0; ALUSrc = 1'b1; RegWrite = 1'b1; 
-                ALUSrcB = 1'b0; ConcEn = 1'b0; JALR =1'b0; JAL = 1'b1;
+                ALUSrcB = 1'b0; ConcEn = 1'b0; Jalr =1'b0; Jal = 1'b1;
             end                                           
             `OPCODE_JALR: begin                               
                 Branch = 1'b0; MemRead = 1'b0; MemtoReg = 2'b10; ALUOp = 2'b00; MemWrite = 1'b0; ALUSrc = 1'b1; RegWrite = 1'b1; 
-                ALUSrcB = 1'b0; ConcEn = 1'b0; JALR =1'b1; JAL = 1'b0;
+                ALUSrcB = 1'b0; ConcEn = 1'b0; Jalr =1'b1; Jal = 1'b0;
             end                                           
             `OPCODE_LUI: begin                               
                 Branch = 1'b0; MemRead = 1'b0; MemtoReg = 2'b11; ALUOp = 2'b11; MemWrite = 1'b0; ALUSrc = 1'b1; RegWrite = 1'b1; 
-                ALUSrcB = 1'b0; ConcEn = 1'b1; JALR =1'b0; JAL = 1'b0;
+                ALUSrcB = 1'b0; ConcEn = 1'b1; Jalr =1'b0; Jal = 1'b0;
             end                                           
             default: begin                                
                 Branch = 1'b0; MemRead = 1'b0; MemtoReg = 2'b00; ALUOp = 2'b10; MemWrite = 1'b0; ALUSrc = 1'b0; RegWrite = 1'b0; 
-                ALUSrcB = 1'b0; ConcEn = 1'b0; JALR =1'b0; JAL = 1'b0;
+                ALUSrcB = 1'b0; ConcEn = 1'b0; Jalr =1'b0; Jal = 1'b0;
             end
         endcase
     end
