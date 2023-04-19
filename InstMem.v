@@ -1,6 +1,33 @@
-module InstMem (input [5:0] addr, output [31:0] data_out);
+`timescale 1ns / 1ps
+
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 04/14/2023 10:21:23 PM
+// Design Name: 
+// Module Name: Instruction memory
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+module InstMem 
+(
+ input [5:0] Addr, 
+ output [31:0] DataOut
+);
+ 
  reg [31:0] mem [0:63];
- assign data_out = mem[addr];
+ assign DataOut = mem[Addr];
  initial begin
         mem[0]=32'h00000083; 
         mem[1]=32'h00100103 ;                               
