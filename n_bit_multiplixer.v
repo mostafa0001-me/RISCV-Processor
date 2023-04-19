@@ -20,15 +20,24 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module MUX #(parameter n = 32)(input[n-1:0] in1,input[n-1:0] in2,input[n-1:0] in3,input[n-1:0] in4, input[1:0] choose, output reg[n-1:0] out);
+module MUX 
+#(parameter n = 32)
+(
+    input[n-1:0] In1,
+    input[n-1:0] In2,
+    input[n-1:0] In3,
+    input[n-1:0] In4, 
+    input[1:0] Choose, 
+    output reg[n-1:0] Out
+);
 
     always @(*)begin
-        case(choose)
-            2'b00: out = in1;
-            2'b01: out = in2;
-            2'b10: out = in3;
-            2'b11: out = in4;
+        case(Choose)
+            2'b00: Out = In1;
+            2'b01: Out = In2;
+            2'b10: Out = In3;
+            2'b11: Out = In4;
+            default: Out = In4;
         endcase
     end
-
 endmodule
