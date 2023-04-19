@@ -20,21 +20,23 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module shifter(
-    input [31:0] a,
-    input [4:0] shamt,
-    input [1:0] type,
-    output reg [31:0] r
-    );
+module Shifter
+(
+    input [31:0] A,
+    input [4:0] ShAmt,
+    input [1:0] Type,
+    output reg [31:0] R
+);
+    
     /*always @(*) begin
-        if(shamt == 32) r = 32'b0;
-        else if(shamt == 0) r = a;
+        if(ShAmt == 32) R = 32'b0;
+        else if(ShAmt == 0) R = A;
         else begin
         
-            case(type)
-                2'b00: r = a << shamt;
-                2'b01: r = a >> shamt;
-                2'b10: r = a >>> shamt;
+            case(Type)
+                2'b00: R = A << ShAmt;
+                2'b01: R = A >> ShAmt;
+                2'b10: R = A >>> ShAmt;
             endcase
             
         end
@@ -42,14 +44,16 @@ module shifter(
     */
     integer i;
         always@(*) begin
-            r  = a;
-            for(i = 0 ; i < shamt ; i = i + 1)
+            R  = A;
+            for(i = 0 ; i < ShAmt ; i = i + 1)
             begin
-            case(type)
-                  2'b00:  r = {r[30:0], 1'b0};
-                  2'b01:  r = {1'b0, r[31:1]};
-                  2'b10:  r = {r[31], r[31:1]};
-            endcase
+                    case(Type)
+                        2'b00:  R = {R[30:0], 1'b0};
+                        2'b01:  R = {1'b0, R[31:1]};
+                        2'b10:  R = {R[31], R[31:1]};
+                        // a default is mandatory for all case statements
+                        default: R=R;
+                    endcase
             end
         end
 endmodule
