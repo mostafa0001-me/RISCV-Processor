@@ -20,28 +20,38 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module DataMem(input clk, input[2:0] choose ,input MemRead, input MemWrite,input [5:0] addr, input [31:0] data_in, output reg [31:0] data_out);
+module DataMem
+(
+    input clk, 
+    input[2:0] Choose,
+    input MemRead, 
+    input MemWrite,
+    input [5:0] Addr,
+    input [31:0] DataIn,
+    output reg [31:0] DataOut
+);
+    
     reg [7:0] mem [0:150];
         always@ (*) begin
         if(MemRead)
-            case(choose)
-                3'b000:   data_out = {{24{mem[addr][7]}},mem[addr]};
-                3'b001:   data_out = {{16{mem[addr][7]}}, mem[addr], mem[addr+1]};
-                3'b010:   data_out = {mem[addr], mem[addr+1], mem[addr+2], mem[addr+3]};
-                3'b100:   data_out = {24'b0, mem[addr]};
-                3'b101:   data_out = {16'b0, mem[addr], mem[addr+1]};      
-                default:  data_out = 32'b0;
+            case(Choose)
+                3'b000:   DataOut = {{24{mem[Addr][7]}},mem[Addr]};
+                3'b001:   DataOut = {{16{mem[Addr][7]}}, mem[Addr], mem[Addr+1]};
+                3'b010:   DataOut = {mem[Addr], mem[Addr+1], mem[Addr+2], mem[Addr+3]};
+                3'b100:   DataOut = {24'b0, mem[Addr]};
+                3'b101:   DataOut = {16'b0, mem[Addr], mem[Addr+1]};      
+                default:  DataOut = 32'b0;
             endcase
         else
-            data_out = 32'b0;
+            DataOut = 32'b0;
     end
 
     always @(posedge(clk)) begin
         if(MemWrite)
                 case(choose)
-                    3'b000:  mem[addr] = data_in[7:0];   
-                    3'b001:  {mem[addr], mem[addr+1]} = data_in[15:0];
-                    3'b010:  {mem[addr], mem[addr+1], mem[addr+2], mem[addr+3]} = data_in;
+                    3'b000:  mem[Addr] = DataIn[7:0];   
+                    3'b001:  {mem[Addr], mem[Addr+1]} = DataIn[15:0];
+                    3'b010:  {mem[Addr], mem[Addr+1], mem[Addr+2], mem[Addr+3]} = DataIn;
                 endcase
     end 
     initial begin
