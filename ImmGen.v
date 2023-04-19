@@ -1,5 +1,27 @@
 `include "defines.v"
 
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 04/14/2023 10:21:23 PM
+// Design Name: 
+// Module Name: immGen
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
 module ImmGen (
     input  wire [31:0]  IR,
     output reg  [31:0]  Imm
