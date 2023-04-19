@@ -5,7 +5,7 @@
 // 
 // Create Date: 02/28/2023 11:55:33 AM
 // Design Name: 
-// Module Name: registerfile
+// Module Name: RegisterFile
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,22 +20,43 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module registerfile#(parameter n = 32)(input write, input[n-1:0] write_data, input[4:0] write_address, input[4:0] read_address1, input[4:0] read_address2, output [n-1:0] R1, output [n-1:0] R2, input reset, input clk);
+module RegisterFile
+#(parameter n = 32)
+(
+    input clk,
+    input rst, 
+    input Write, 
+    input[n-1:0] WriteData, 
+    input[4:0] WriteAddress, 
+    input[4:0] ReadAddress1, 
+    input[4:0] ReadAddress2, 
+    output [n-1:0] R1, 
+    output [n-1:0] R2
+);
 
+    
     reg[n-1:0] registers[31:0];
     integer i;
-    always@(posedge(clk), posedge(reset)) begin
+    // synchronous actions only with clk and rst
+    always@(posedge(clk), posedge(rst)) begin
         registers[0] = 0;
-        if(reset)begin
+        
+        // trying to rst memory to zeros
+        if(rst)begin
             for(i = 1; i < n; i = i + 1) begin
                   registers[i] = 0;
             end 
         end
-        else if(write && (write_address != 0)) begin
-            registers[write_address] = write_data;
-        end    
+        
+        // condition: write signal from CU with a reasonable write address.
+        else if(Write && (WriteAddress != 0)) begin
+            registers[WriteAddress] = WriteData;
+        end   
+        
+        // every if should have an else statement. 
+        else begin end
     end
-    assign R1 = registers[read_address1];
-    assign R2 = registers[read_address2];
+    assign R1 = registers[ReadAddress1];
+    assign R2 = registers[ReadAddress2];
 endmodule
 
