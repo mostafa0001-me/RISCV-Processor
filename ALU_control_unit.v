@@ -20,24 +20,31 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module ALU_control_unit(input[1:0] aluop,input[31:0] inreg,input alusrc,output reg[3:0] select);
+module ALUControlUnit
+(
+	input[1:0] ALUOp,
+	input[31:0] InReg,
+	input ALUSrc,
+	output reg[3:0] Select
+);
 
 always@(*)
 begin
-	if (aluop == 2'b00) select = 4'b0000; 	// add
- 	else if (aluop == 2'b01) select = 4'b0001;	// sub
-	else if (aluop == 2'b10 && inreg[14:12] == 3'b000 && (inreg[30] ==0 || alusrc)) select = 4'b0000; // add
-	else if (aluop == 2'b10 && inreg[14:12] == 3'b000 && (inreg[30] ==1 && !alusrc)) select = 4'b0001; // sub
-	else if (aluop == 2'b10 && inreg[14:12] == 3'b111 && (inreg[30] ==0 || alusrc) ) select = 4'b0101; // and
-	else if (aluop == 2'b10 && inreg[14:12] == 3'b110 && (inreg[30] ==0 || alusrc) ) select = 4'b0100; // or
-	else if (aluop == 2'b10 && inreg[14:12] == 3'b001 && inreg[30] ==0) select = 4'b1000; // sll
-	else if (aluop == 2'b10 && inreg[14:12] == 3'b010 && (inreg[30] ==0 || alusrc) ) select = 4'b1101; // slt
-	else if (aluop == 2'b10 && inreg[14:12] == 3'b011 && (inreg[30] ==0 || alusrc) ) select = 4'b1111; // sltu
-	else if (aluop == 2'b10 && inreg[14:12] == 3'b100 && (inreg[30] ==0 || alusrc) ) select = 4'b0111; // xor
-	else if (aluop == 2'b10 && inreg[14:12] == 3'b101 && inreg[30] ==0 ) select = 4'b1001; // srl
-	else if (aluop == 2'b10 && inreg[14:12] == 3'b101 && inreg[30] ==1 ) select = 4'b1010; // sra
-	else if (aluop == 2'b11 ) select = 4'b0011; // lui
-	else select = 4'b1111;
+	if (ALUOp == 2'b00) Select = 4'b0000; 	// add
+ 	else if (ALUOp == 2'b01) Select = 4'b0001;	// sub
+	else if (ALUOp == 2'b10 && InReg[14:12] == 3'b000 && (InReg[30] ==0 || ALUSrc)) Select = 4'b0000; // add
+	else if (ALUOp == 2'b10 && InReg[14:12] == 3'b000 && (InReg[30] ==1 && !ALUSrc)) Select = 4'b0001; // sub
+	else if (ALUOp == 2'b10 && InReg[14:12] == 3'b111 && (InReg[30] ==0 || ALUSrc) ) Select = 4'b0101; // and
+	else if (ALUOp == 2'b10 && InReg[14:12] == 3'b110 && (InReg[30] ==0 || ALUSrc) ) Select = 4'b0100; // or
+	else if (ALUOp == 2'b10 && InReg[14:12] == 3'b001 && InReg[30] ==0) Select = 4'b1000; // sll
+	else if (ALUOp == 2'b10 && InReg[14:12] == 3'b010 && (InReg[30] ==0 || ALUSrc) ) Select = 4'b1101; // slt
+	else if (ALUOp == 2'b10 && InReg[14:12] == 3'b011 && (InReg[30] ==0 || ALUSrc) ) Select = 4'b1111; // sltu
+	else if (ALUOp == 2'b10 && InReg[14:12] == 3'b100 && (InReg[30] ==0 || ALUSrc) ) Select = 4'b0111; // xor
+	else if (ALUOp == 2'b10 && InReg[14:12] == 3'b101 && InReg[30] ==0 ) Select = 4'b1001; // srl
+	else if (ALUOp == 2'b10 && InReg[14:12] == 3'b101 && InReg[30] ==1 ) Select = 4'b1010; // sra
+	else if (ALUOp == 2'b11 ) Select = 4'b0011; // lui
+	// every if should have an else statement
+	else Select = 4'b1111;
 end
 
 endmodule
