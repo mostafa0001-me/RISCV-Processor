@@ -87,7 +87,7 @@ module Processor(input clk, input rst, input [1:0] LedSel, input [3:0] ssdSel,
     Four_Digit_Seven_Segment_Driver ssddrive(.clk(ssdClk),.Num(ssd),.Anode(Anode),.LEDOut(LED_out));
     
     always @(posedge(clk) or posedge(reset))begin
-        if(reset)
+        if(rst)
             PC = 0;
         else
             PC = outputtoPC;
