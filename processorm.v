@@ -48,24 +48,43 @@ module Processor(input clk, input reset, input [1:0] LedSel, input [3:0] ssdSel,
     wire break, recall;
     //modules
     assign break = (inst[6:2] == 5'b11100) & inst[20];
+    
     assign recall = (((inst[6:2] == 5'b11100) & !inst[20]) | (inst[6:2] == 5'b00011));
+    
     assign shamt = alusrc? immediate: regdata2[4:0];
-    branches andd(.branch(branch), .cf(cf), .vf(vf), .zf(zf), .sf(sf), .andout(andout), .inst(inst[14:12]));
-    InstMem instout(.addr(PC[7:2]), .data_out(inst));
+    
+    Branches andd(.Branch(branch), .CF(cf), .VF(vf), .ZF(zf), .SF(sf), .AndOut(andout), .Inst(inst[14:12]));
+    
+    InstMem instout(.Addr(PC[7:2]), .DataOut(inst));
+    
     assign pc4 = PC + 4;
-    control_unit cont(.instruction(inst),.JAL(JAL) ,.AUIPC(AUIPC), .ConcEn(ConcEn), .Shift(Shift), .JALR(JALR) ,.branch(branch), .memread(memread), .memtoreg(memtoreg), .memwrite(memwrite), .alusrc(alusrc), .regwrite(regwrite), .aluop(aluop));
-    registerfile#(32) rf(.write(regwrite), .write_data(dataToWrite), .write_address(inst[11:7]), .read_address1(inst[19:15]), .read_address2(inst[24:20]), .R1(regdata1), .R2(regdata2), .reset(reset), .clk(clk));
+    
+    ControlUnit cont(.Instruction(inst),.Jal(JAL) ,.ALUSrcB(AUIPC), .ConcEn(ConcEn), .Shift(Shift), .Jalr(JALR) ,.Branch(branch), 
+                     .MemRead(memread), .MemtoReg(memtoreg), .MemWrite(memwrite), .ALUSrcA(alusrc), .RegWrite(regwrite), .ALUOp(aluop));
+    
+    RegisterFile#(32) rf(.Write(regwrite), .WriteData(dataToWrite), .WriteAddress(inst[11:7]), .ReadAddress1(inst[19:15]), 
+                         .ReadAddress2(inst[24:20]), .R1(regdata1), .R2(regdata2), .rst(reset), .clk(clk));
+    
     ImmGen imm(.Imm(immediate), .IR(inst));
     //shift#(32) sh(.A(immediate), .B(offset));
     assign dataToAlu = alusrc ? immediate: regdata2;
+    
     assign dataToAlu1 = AUIPC ? PC: regdata1;
+    
     assign jumpaddress = JALR ? aluoutput : (break ? PC : (recall? 32'b0 : (PC + immediate)));
-    ALU_control_unit contalu(.aluop(aluop), .alusrc(alusrc),.inreg(inst),.select(alucont));
-    ALU alu(.shamt(shamt),.a(dataToAlu1),.b(dataToAlu),.alufn(alucont),.zf(zf), .vf(vf), .cf(cf), .sf(sf),.r(aluoutput));
-    DataMem mem(.clk(clk), .MemRead(memread), .choose(inst[14:12]), .MemWrite(memwrite),.addr({aluoutput[5:0]}), .data_in(regdata2), .data_out(memoutput));
-    MUX mm(.in1(aluoutput), .in2(memoutput), .in3(pc4), .in4(immediate), .choose(memtoreg), .out(dataToWrite));
+    
+    ALUControlUnit contalu(.ALUOp(aluop), .ALUSrcA(alusrc),.InReg(inst),.Select(alucont));
+    
+    ALU alu(.ShAmt(shamt),.A(dataToAlu1),.B(dataToAlu),.ALUFn(alucont),.ZF(zf), .VF(vf), .CF(cf), .SF(sf),.R(aluoutput));
+    
+    DataMem mem(.clk(clk), .MemRead(memread), .Choose(inst[14:12]), .MemWrite(memwrite),
+                .Addr({aluoutput[5:0]}), .DataIn(regdata2), .DataOut(memoutput));
+    
+    MUX mm(.In1(aluoutput), .In2(memoutput), .In3(pc4), .In4(immediate), .Choose(memtoreg), .Out(dataToWrite));
+    
     assign outputtoPC = (andout | JAL | JALR | break | recall) ? jumpaddress: pc4;
-    Four_Digit_Seven_Segment_Driver ssddrive(.clk(ssdClk),.num(ssd),.Anode(Anode),.LED_out(LED_out));
+    
+    Four_Digit_Seven_Segment_Driver ssddrive(.clk(ssdClk),.Num(ssd),.Anode(Anode),.LEDOut(LED_out));
     
     always @(posedge(clk) or posedge(reset))begin
         if(reset)
