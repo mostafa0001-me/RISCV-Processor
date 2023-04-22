@@ -30,10 +30,10 @@ module ALU(
 	input   wire [3:0]  ALUFn	// ALUOP
 );
 
-    wire [31:0] add, sub, op_b;
+	wire [31:0] add, sub, op_b;	// no need for sub because we check for add and sub at the same formula.
     wire cfa, cfs;
     
-    	assign op_b = (~b);
+	assign op_b = (~B);
     	//assign shamt = B[4:0];
 	assign {CF, add} = ALUFn[0] ? (A + op_b + 1'b1) : (A + B);
     	assign ZF = (add == 0);
