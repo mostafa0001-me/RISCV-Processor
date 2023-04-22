@@ -44,7 +44,7 @@ begin
 	else if (ALUOp == 2'b10 && InReg[14:12] == 3'b101 && InReg[30] ==1 ) Select = 4'b1010; // sra
 	else if (ALUOp == 2'b11 ) Select = 4'b0011; // lui
 	// every if should have an else statement
-	else Select = 4'b1111;
+	else Select = 4'b0010;
 end
 
 endmodule
