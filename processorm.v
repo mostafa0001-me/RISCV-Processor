@@ -73,7 +73,7 @@ module Processor(input clk, input rst, input [1:0] LedSel, input [3:0] ssdSel,
     
     assign jumpaddress = JALR ? aluoutput : (break ? PC : (recall? 32'b0 : (PC + immediate)));
     
-    ALUControlUnit contalu(.ALUOp(aluop), .ALUSrcA(alusrc),.InReg(inst),.Select(alucont));
+    ALUControlUnit contalu(.ALUOp(aluop), .ALUSrc(alusrc),.InReg(inst),.Select(alucont));
     
     ALU alu(.ShAmt(shamt),.A(dataToAlu1),.B(dataToAlu),.ALUFn(alucont),.ZF(zf), .VF(vf), .CF(cf), .SF(sf),.R(aluoutput));
     
