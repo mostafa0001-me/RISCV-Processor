@@ -35,12 +35,12 @@ module DataMem
         always@ (*) begin
         if(MemRead)
             case(Choose)
-                3'b000:   DataOut = {{24{mem[Addr][7]}},mem[Addr]};
-                3'b001:   DataOut = {{16{mem[Addr][7]}}, mem[Addr], mem[Addr+1]};
-                3'b010:   DataOut = {mem[Addr], mem[Addr+1], mem[Addr+2], mem[Addr+3]};
-                3'b100:   DataOut = {24'b0, mem[Addr]};
-                3'b101:   DataOut = {16'b0, mem[Addr], mem[Addr+1]};      
-                default:  DataOut = 32'b0;
+                3'b000:   DataOut = {{24{mem[Addr][7]}},mem[Addr]};                     // lb
+                3'b001:   DataOut = {{16{mem[Addr][7]}}, mem[Addr], mem[Addr+1]};       // lh
+                3'b010:   DataOut = {mem[Addr], mem[Addr+1], mem[Addr+2], mem[Addr+3]}; // lw
+                3'b100:   DataOut = {24'b0, mem[Addr]};                                 // lbu
+                3'b101:   DataOut = {16'b0, mem[Addr], mem[Addr+1]};                    // lhu
+                default:  DataOut = 32'b0;                                              // zero
             endcase
         else
             DataOut = 32'b0;
@@ -49,9 +49,9 @@ module DataMem
     always @(posedge(clk)) begin
         if(MemWrite)
                 case(choose)
-                    3'b000:  mem[Addr] = DataIn[7:0];   
-                    3'b001:  {mem[Addr], mem[Addr+1]} = DataIn[15:0];
-                    3'b010:  {mem[Addr], mem[Addr+1], mem[Addr+2], mem[Addr+3]} = DataIn;
+                    3'b000:  mem[Addr] = DataIn[7:0];                                    // sb
+                    3'b001:  {mem[Addr], mem[Addr+1]} = DataIn[15:0];                    // sh
+                    3'b010:  {mem[Addr], mem[Addr+1], mem[Addr+2], mem[Addr+3]} = DataIn;// sw
                 endcase
     end 
     initial begin
